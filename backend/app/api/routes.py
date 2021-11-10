@@ -8,6 +8,8 @@ from .. import db
 from . import api
 
 from .models import Quote
+from .data import getquote
+
 
 from .._helpers._helpers import tojsonresponse
 from flask.views import MethodView
@@ -55,12 +57,14 @@ class QuoteAPI(MethodView):
 class ViewQuoteAPI(MethodView):
     def post(self):
         post_data = request.get_json()
-
+        
+        
         try:
-            if post_data.get('region') is not None:
-                results = getquote(post_data.get('region'))
-            else:
+            if post_data.get('region') == 0:
                 results = getquote()
+            else:
+                results = getquote(post_data.get('region'))
+                
             
             if results:
                 return  tojsonresponse('000','Success',results)

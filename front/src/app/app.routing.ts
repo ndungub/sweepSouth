@@ -37,8 +37,8 @@ export const routes: Routes = [
         loadChildren: () => import('./views/settings/settings.module').then(m => m.SettingsModule)
       },
       {
-        path: 'data',
-        loadChildren: () => import('./views/settings/settings.module').then(m => m.SettingsModule)
+        path: 'quotes',
+        loadChildren: () => import('./views/quotes/quotes.module').then(m => m.QuotesModule)
       }
     ]
   }

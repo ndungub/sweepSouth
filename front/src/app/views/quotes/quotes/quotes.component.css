@@ -1,0 +1,15 @@
+.sk-cube-grid{ 
+	position: relative;
+    top: 50% !important;
+    left: 100% !important;
+    width: 80px !important;
+    z-index: 99999999;  
+    
+}
+
+.wait {
+	position: relative;
+	left: 100% !important;
+	text-align: center;
+	
+}

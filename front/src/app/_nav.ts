@@ -36,12 +36,12 @@ export const navItems: INavData[] = [
 	]
   },  
   {
-    name: 'Data',
-    url: '/data',
+    name: 'Quotes',
+    url: '/quotes',
     children: [
 	  {
-        name: 'Data',
-        url: '/data/mydata',
+        name: 'Quotes',
+        url: '/quotes/quotes',
         icon: 'icon-puzzle'
       }
 	]
