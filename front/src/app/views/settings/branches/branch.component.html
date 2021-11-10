@@ -1,0 +1,163 @@
+
+<div class="animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+       Branches
+    </div>
+    <div class="card-body">
+    	<div class="row">
+	    	<div class="col-md-6 mb-xl-3">
+	        	<button type="button" class="btn btn-pill btn-block btn-primary" (click)="onNewBranch()">Add Branch</button>
+        	</div>
+	    	<div class="col-md-6 mb-xl-3"  *ngIf="canEdit">
+	       		 <button type="button" class="btn btn-pill btn-block btn-primary" (click)="onEditBranch()">Edit Branch</button>
+        	</div>
+        
+        </div>
+		<div #myGrid>
+			<jqxGrid  #branchGrid (onRowselect)="rowSelect($event)" (onRowunselect)="rowUnSelect($event)"></jqxGrid>
+		</div>
+		
+  </div>
+</div>
+
+
+<div bsModal #largeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h4 class="modal-title">{{ modalTitle  }}</h4>
+	        <button type="button" class="close" (click)="largeModal.hide()" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	
+	      <div class="modal-body">
+            			<form [formGroup]="branchForm" novalidate (ngSubmit)="onSubmit()" class="needs-validation">
+			                <div class="form-group">
+			                  <div class="row">
+				                  <div class="col-md-6">
+				                  	<div class="form-group">
+						                  <input class="form-control"
+						                         id="branchname"
+						                         type="text"
+						                         formControlName="branchname"
+						                         placeholder="Branch name"
+						                         autocomplete="given-name"
+						                         required
+						                         autofocus
+						                         [ngClass]="{ 'is-invalid': submitted && f.branchname.errors, 'is-valid': f.branchname.touched && !f.branchname.errors }" />
+						                  <div *ngFor="let validation of validation_messages.branchname"  class="invalid-feedback">
+						                    <div *ngIf="submitted && f.branchname.errors && f.branchname.hasError(validation.type)">
+						                    	<div>{{ validation.message }}</div>
+						                    </div>
+						                  </div>
+						              </div>
+				                  </div>
+				                  <div class="col-md-6">
+				                  	<div class="form-group">
+						                  <input class="form-control"
+						                         id="code"
+						                         type="text"
+						                         formControlName="code"
+						                         placeholder="Code"
+						                         autocomplete="given-name"
+						                         required
+						                         autofocus
+						                         [ngClass]="{ 'is-invalid': submitted && f.code.errors, 'is-valid': f.code.touched && !f.code.errors }" />
+						                  <div *ngFor="let validation of validation_messages.code"  class="invalid-feedback">
+						                    <div *ngIf="submitted && f.code.errors && f.code.hasError(validation.type)">
+						                    	<div>{{ validation.message }}</div>
+						                    </div>
+						                  </div>
+						              </div>
+				                  </div>
+			                  </div>
+			                  <div class="row">
+				                  <div class="col-md-6">
+				                  	<div class="form-group">
+						                  <input class="form-control"
+						                         id="phoneno"
+						                         type="text"
+						                         formControlName="phoneno"
+						                         placeholder="Phone No"
+						                         autocomplete="given-name"
+						                         required
+						                         autofocus
+						                         [ngClass]="{ 'is-invalid': submitted && f.phoneno.errors, 'is-valid': f.phoneno.touched && !f.phoneno.errors }" />
+						                  <div *ngFor="let validation of validation_messages.phoneno"  class="invalid-feedback">
+						                    <div *ngIf="submitted && f.phoneno.errors && f.phoneno.hasError(validation.type)">
+						                    	<div>{{ validation.message }}</div>
+						                    </div>
+						                  </div>
+					                 </div>
+				                  </div>
+				                  <div class="col-md-6">
+				                  	 <div class="form-group">
+						                  <div class="custom-control custom-checkbox">
+						                    <input type="checkbox"
+						                           class="custom-control-input"
+						                           id="branch_status"
+						                           formControlName="status"/>
+						                    <label class="custom-control-label" for="branch_status">Active?</label>
+						                  </div>
+						              </div>
+				                  </div>
+			                  </div>
+			                  <div class="row">
+				                  <div class="col-md-10">
+				                  	<div class="form-group">
+						                  <textarea class="form-control"
+						                         id="address"
+						                         formControlName="address"
+						                         placeholder="Address"
+						                         autocomplete="given-name"
+						                         required
+						                         autofocus
+						                         rows="5"
+						                         [ngClass]="{ 'is-invalid': submitted && f.address.errors, 'is-valid': f.address.touched && !f.address.errors }" >
+						                  </textarea>
+						                  <div *ngFor="let validation of validation_messages.address"  class="invalid-feedback">
+						                    <div *ngIf="submitted && f.address.errors && f.address.hasError(validation.type)">
+						                    	<div>{{ validation.message }}</div>
+						                    </div>
+						                  </div>
+					                 </div>
+				                  </div>
+				              </div>
+				              
+			                </div>
+            			</form>
+            	
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" (click)="onReset()">Close</button>
+	        <button class="btn btn-primary" type="submit" (click)="onSubmit()">Save changes</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+</div>
+
+<div class="col-lg-4" [hidden]="!loading">
+       <div class="sk-cube-grid">
+         <div class="sk-cube sk-cube1"></div>
+         <div class="sk-cube sk-cube2"></div>
+         <div class="sk-cube sk-cube3"></div>
+         <div class="sk-cube sk-cube4"></div>
+         <div class="sk-cube sk-cube5"></div>
+         <div class="sk-cube sk-cube6"></div>
+         <div class="sk-cube sk-cube7"></div>
+         <div class="sk-cube sk-cube8"></div>
+         <div class="sk-cube sk-cube9"></div>
+        
+       </div>
+       <div class="wait">
+       		Please wait.....
+       </div>
+       
+ </div>
+
+
+
+<toaster-container [toasterconfig]="toasterconfig"></toaster-container>

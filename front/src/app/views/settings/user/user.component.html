@@ -1,0 +1,316 @@
+
+<div class="animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+      Users
+    </div>
+    <div class="card-body">
+    	<div class="row">
+	    	<div class="col-md-6 mb-xl-3">
+	        	<button type="button" class="btn btn-pill btn-block btn-primary" (click)="onNewUser()">Add User</button>
+        	</div>
+	    	<div class="col-md-6 mb-xl-3"  *ngIf="canEdit">
+	       		 <button type="button" class="btn btn-pill btn-block btn-primary" (click)="onEditUser()">Edit User</button>
+        	</div>
+        
+        </div>
+		<div #myGrid>
+			<jqxGrid  #userGrid (onRowselect)="rowSelect($event)" (onRowunselect)="rowUnSelect($event)"></jqxGrid>
+		</div>
+		
+    	<div class="row" *ngIf="canEdit && canResetPwd">
+	    	<div class="col-md-6 mb-xl-3">
+	        	<button type="button" class="btn btn-pill btn-block btn-primary" (click)="onNewUser()">Reset Password</button>
+        	</div>
+	    	<div class="col-md-6 mb-xl-3"  >
+	       		 <button type="button" class="btn btn-pill btn-block btn-primary" (click)="onEditUser()">Reset Login Attempts</button>
+        	</div>
+        
+        </div>
+		
+  </div>
+</div>
+
+
+
+<div bsModal #largeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h4 class="modal-title">{{ modalTitle  }}</h4>
+	        <button type="button" class="close" (click)="largeModal.hide()" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	
+	      <div class="modal-body">
+            			<form [formGroup]="userForm" novalidate (ngSubmit)="onSubmit()" class="needs-validation">
+			                <div class="form-group">
+			                  <div class="row">
+				                  <div class="col-md-6">
+				                  	<div class="form-group">
+				                  		  <label for="name">Username</label>
+						                  <input class="form-control"
+						                         id="username"
+						                         type="text"
+						                         formControlName="username"
+						                         placeholder="User Name"
+						                         autocomplete="given-name"
+						                         required
+						                         autofocus
+						                         [ngClass]="{ 'is-invalid': submitted && f.username.errors, 'is-valid': f.username.touched && !f.username.errors }" />
+						                  <div *ngFor="let validation of validation_messages.username"  class="invalid-feedback">
+						                    <div *ngIf="submitted && f.username.errors && f.username.hasError(validation.type)">
+						                    	<div>{{ validation.message }}</div>
+						                    </div>
+						                  </div>
+						              </div>
+				                  </div>
+				                  <div class="col-md-6">
+				                  	<div class="form-group">
+				                  		  <label for="name">Full Names</label>
+						                  <input class="form-control"
+						                         id="fullname"
+						                         type="text"
+						                         formControlName="fullname"
+						                         placeholder="Full Names"
+						                         autocomplete="given-name"
+						                         required
+						                         autofocus
+						                         [ngClass]="{ 'is-invalid': submitted && f.fullname.errors, 'is-valid': f.fullname.touched && !f.fullname.errors }" />
+						                  <div *ngFor="let validation of validation_messages.fullname"  class="invalid-feedback">
+						                    <div *ngIf="submitted && f.fullname.errors && f.fullname.hasError(validation.type)">
+						                    	<div>{{ validation.message }}</div>
+						                    </div>
+						                  </div>
+						              </div>
+				                  </div>
+			                  </div>
+			                  <div class="row">
+					              <div class="col-md-6">
+					              		<label for="name">Mobile No</label>
+						                <div class="input-group">
+						                  <div class="input-group-prepend" dropdown>
+						                    <select    formControlName="country" class="form-control btn btn-primary dropdown-toggle" (ngModelChange)="countryChange($event)">
+												 <option [ngValue]="country" *ngFor="let country of countries" >
+						                        		<div><i class="flag-icon flag-icon-kn" title="kn" id="kn"></i></div>
+						                        		{{ country.name }}
+						                        </option>
+						                 	</select>
+						                  </div>
+										  <input type="text" class="form-control" 
+										  	  formControlName="mobileno"
+											  [textMask]="{mask: phoneMask}" 
+											  autocomplete="off"
+											  required
+											  [ngClass]="{ 'is-invalid': submitted && f.mobileno.errors, 'is-valid': f.mobileno.touched && !f.mobileno.errors }" />
+						                  <div *ngFor="let validation of validation_messages.mobileno"  class="invalid-feedback">
+						                    <div *ngIf="submitted && f.mobileno.errors && f.mobileno.hasError(validation.type)">
+						                    	<div>{{ validation.message }}</div>
+						                    </div>
+						                  </div>					                
+										</div>
+					              </div>
+
+				                  <div class="col-md-6">
+				                  	<div class="form-group">
+				                  		  <label for="name">Email</label>
+						                  <input class="form-control"
+						                         id="email"
+						                         type="email"
+						                         formControlName="email"
+						                         placeholder="Email"
+						                         autocomplete="given-name"
+						                         required
+						                         autofocus
+						                         [ngClass]="{ 'is-invalid': submitted && f.email.errors, 'is-valid': f.email.touched && !f.email.errors }" />
+						                  <div *ngFor="let validation of validation_messages.email"  class="invalid-feedback">
+						                    <div *ngIf="submitted && f.email.errors && f.email.hasError(validation.type)">
+						                    	<div>{{ validation.message }}</div>
+						                    </div>
+						                  </div>
+						              </div>
+				                  </div>
+			                  </div>
+			                  <div class="row">
+				                  <div class="col-md-6">
+				                  	<div class="form-group">
+				                  		 <label for="name">ID Type</label>
+						                 <select class="form-control"
+						                 		id="idtype" name="idtype" 
+						                 		formControlName="idtype"
+						                 		required
+						                        autofocus
+						                        [ngClass]="{ 'is-invalid': submitted && f.idtype.errors, 'is-valid': f.idtype.touched && !f.idtype.errors }">
+						                 	    
+						                 	    <option *ngFor="let item of idtypes" [ngValue]="item">{{ item.name }}</option>
+						                 </select>
+						                  <div *ngFor="let validation of validation_messages.idtype"  class="invalid-feedback">
+						                    <div *ngIf="submitted && f.idtype.errors && f.idtype.hasError(validation.type)">
+						                    	<div>{{ validation.message }}</div>
+						                    </div>
+						                  </div>
+						              </div>
+				                  </div>
+				                  <div class="col-md-6">
+				                  	<div class="form-group">
+				                  		  <label for="name">ID No</label>
+						                  <input class="form-control"
+						                         id="idno"
+						                         type="text"
+						                         formControlName="idno"
+						                         placeholder="ID No"
+						                         autocomplete="given-name"
+						                         required
+						                         autofocus
+						                         [ngClass]="{ 'is-invalid': submitted && f.idno.errors, 'is-valid': f.idno.touched && !f.idno.errors }" />
+						                 <div *ngFor="let validation of validation_messages.idno"  class="invalid-feedback">
+						                    <div *ngIf="submitted && f.idno.errors && f.idno.hasError(validation.type)">
+						                    	<div>{{ validation.message }}</div>
+						                    </div>
+						                  </div>
+						              </div>
+				                  </div>
+
+			                  </div>
+			                  <div class="row">
+				                  <div class="col-md-6">
+				                  	<div class="form-group">
+				                  		 <label for="name">Default Branch</label>
+						                 <select id="branchid" name="branchid" formControlName="branchid"
+						                 		class="form-control"
+						                        [ngClass]="{ 'is-invalid': submitted && f.branchid.errors, 'is-valid': f.branchid.touched && !f.branchid.errors }">
+						                        
+						                        <option *ngFor="let item of branches" [ngValue]="item">{{ item.branchname }}</option>
+						                 </select>
+						                  <div *ngFor="let validation of validation_messages.branchid"  class="invalid-feedback">
+						                    <div *ngIf="submitted && f.branchid.errors && f.branchid.hasError(validation.type)">
+						                    	<div>{{ validation.message }}</div>
+						                    </div>
+						                  </div>
+						              </div>
+				                  </div>
+
+
+			                  </div>			                  
+			                  <div class="row">
+				                  <div class="col-md-6">
+				                  	<div class="form-group">
+				                  		 <label for="name">Access Type</label>
+						                 <select id="access_type" name="access_type" formControlName="access_type"
+						                 		class="form-control"
+						                        [ngClass]="{ 'is-invalid': submitted && f.access_type.errors, 'is-valid': f.access_type.touched && !f.access_type.errors }">
+						                 	    <option *ngFor="let item of accesstypes" [ngValue]="item">{{ item.name }}</option>
+						                 </select>
+						                  <div *ngFor="let validation of validation_messages.access_type"  class="invalid-feedback">
+						                    <div *ngIf="submitted && f.access_type.errors && f.access_type.hasError(validation.type)">
+						                    	<div>{{ validation.message }}</div>
+						                    </div>
+						                  </div>
+						              </div>
+				                  </div>
+				                  <div class="col-md-6">
+				                  	<div class="form-group">
+				                  		 <label for="name">Assign Profile</label>
+						                 <select id="profileid" name="profileid" formControlName="profileid"
+						                 		class="form-control"
+						                        [ngClass]="{ 'is-invalid': submitted && f.profileid.errors, 'is-valid': f.profileid.touched && !f.profileid.errors }">
+						                 	    <option *ngFor="let item of profiles" [ngValue]="item">{{ item.profilename }}</option>
+						                 </select>
+						                  <div *ngFor="let validation of validation_messages.profileid"  class="invalid-feedback">
+						                    <div *ngIf="submitted && f.profileid.errors && f.profileid.hasError(validation.type)">
+						                    	<div>{{ validation.message }}</div>
+						                    </div>
+						                  </div>
+						              </div>
+				                  </div>
+				              </div>
+				              <div class="row">
+				                  <div class="col-md-6">
+				                  	 <div class="form-group">
+				                  	 	  <label for="name">Status</label>
+						                  <div class="custom-control custom-checkbox">
+						                    <input type="checkbox"
+						                           class="custom-control-input"
+						                           id="status"
+						                           formControlName="status"/>
+						                    <label class="custom-control-label" for="status">Active?</label>
+						                  </div>
+						              </div>
+				                  </div>
+				              </div>
+			                </div>
+            			</form>
+            	
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" (click)="onReset()">Close</button>
+	        <button class="btn btn-primary" type="submit" (click)="onSubmit()">Save changes</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+</div>
+
+
+<div bsModal #userAccessBranchModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  	<div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h4 class="modal-title">{{ modalTitle  }}</h4>
+	        <button type="button" class="close" (click)="largeModal.hide()" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	
+	      <div class="modal-body">		
+                <div class="form-group">
+	                  <div class="row">
+		                  <div class="col-md-12">
+		                  		<label for="name">Access Branch</label>
+		                  	    <fieldset class="form-group">
+						            <ng-select
+						            	
+							            class="bootstrap"
+							            placeholder="Choose Access Branch"
+							            [options]="accessbranches"
+							            [multiple]="true"
+							            [allowClear]="true"
+							            [ngModelOptions]="{standalone: true}"
+							            [(ngModel)]="selectedaccessbranches"></ng-select>
+						         </fieldset>
+		                  </div>
+		               </div>
+	             </div>                    
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" (click)="onResetBranches()">Close</button>
+	        <button class="btn btn-primary" type="submit" (click)="onSubmitAccessBranches()">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+</div>
+
+<div class="col-lg-4" [hidden]="!loading">
+       <div class="sk-cube-grid">
+         <div class="sk-cube sk-cube1"></div>
+         <div class="sk-cube sk-cube2"></div>
+         <div class="sk-cube sk-cube3"></div>
+         <div class="sk-cube sk-cube4"></div>
+         <div class="sk-cube sk-cube5"></div>
+         <div class="sk-cube sk-cube6"></div>
+         <div class="sk-cube sk-cube7"></div>
+         <div class="sk-cube sk-cube8"></div>
+         <div class="sk-cube sk-cube9"></div>
+        
+       </div>
+       <div class="wait">
+       		Please wait.....
+       </div>
+       
+ </div>
+
+
+
+<toaster-container [toasterconfig]="toasterconfig"></toaster-container>
+
