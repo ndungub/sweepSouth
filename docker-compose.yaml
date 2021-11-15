@@ -1,0 +1,53 @@
+version: '3.5'
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: "backend"
+    ports:
+      - "5001:5000"
+    environment:
+      FLASK_ENV: development
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "4201:4200"
+      - '9876:9876'
+    networks:
+      - sweepsouth
+    command: ng serve --host 0.0.0.0 --port 4200 --poll=2000
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: 'sweepsouth'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'mab##mab'
+      MYSQL_ROOT_PASSWORD: 'mab##mab'
+    ports:
+      - '3308:3306'
+    networks:
+      - sweepsouth
+  db_test:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: 'sweepsouth_test'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'mab##mab'
+      MYSQL_ROOT_PASSWORD: 'mab##mab'
+    ports:
+      - '3309:3306'
+    networks:
+      - sweepsouth
+    
+    
+networks:
+  sweepsouth:
+    name: sweepsouth
+    driver: bridge
+    ipam:
+      driver: default
+
+
+volumes:
+  shared: {}

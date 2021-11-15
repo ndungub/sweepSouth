@@ -11,7 +11,7 @@ import CryptoJS from 'crypto-js';
 import { map, catchError, tap } from 'rxjs/operators';
 
 
-let apiUrl = 'http://127.0.0.1:5000/';
+let apiUrl = 'http://127.0.0.1:5001/';
 //let apiUrl = 'https://catalog.imab.ke/';
 
 @Injectable()

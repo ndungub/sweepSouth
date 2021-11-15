@@ -18,7 +18,7 @@ import json
 from flask_login import UserMixin
 from sqlalchemy.ext.declarative import declarative_base
 
-from app import db, login_manager, ma, bcrypt
+from app import db, ma, bcrypt
 from flask import current_app as app
 
 import profile
@@ -154,10 +154,6 @@ class BlacklistToken(db.Model):
             return False
 
 
-# Set up user_loader
-@login_manager.user_loader
-def load_user(userid):
-    return User.query.get(int(userid))
 
 
 class Profile(db.Model):

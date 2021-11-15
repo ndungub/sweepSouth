@@ -5,11 +5,11 @@ import os
 from flask import Flask
 from flask_mysqldb import MySQL
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_marshmallow import Marshmallow
 from flask_bcrypt import Bcrypt
-
+from flask_login import LoginManager
+from flask_cors import CORS
 
 import mysql.connector
 
@@ -17,14 +17,12 @@ import mysql.connector
 # local imports
 from config import app_config
 
-from flask_cors import CORS
 
 
 # db variable initialization
 db = SQLAlchemy()
 ma = Marshmallow()
 bcrypt = Bcrypt()
- 
 login_manager = LoginManager()
 
 def init_app(config_name):
@@ -41,7 +39,7 @@ def init_app(config_name):
       login_manager.init_app(app)
       login_manager.login_message = "You must be logged in to access this page."
       login_manager.login_view = "auth.login" 
-
+      
       migrate = Migrate(app, db)
       ma = Marshmallow(app)
       bcrypt = Bcrypt(app)

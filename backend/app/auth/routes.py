@@ -25,6 +25,7 @@ class LoginAPI(MethodView):
     """
     def post(self):
         post_data = request.get_json()
+        print('XXXXXXXXXXX')
         try:
             # fetch the user data
             user = User.query.filter_by(username=post_data.get('username')).first()
