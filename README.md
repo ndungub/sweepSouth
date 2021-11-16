@@ -30,6 +30,12 @@ https://127.0.0.1:4201
 3308 and 3309 
 ```
 
+##### login
+```bash
+username: boniface 
+password: boniface
+```
+
  
 
 
